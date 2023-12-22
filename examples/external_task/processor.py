@@ -1,28 +1,3 @@
-# camunda-client
-
-This package includes clients such as CamundaEngineClient and ExternalTaskClient
-
-In addition, there is an ExternalTaskWorker for working with ExternalTask
-
-## Installing
-
-### pip
-
-```bash
-pip install camunda-client
-```
-
-### pdm
-
-```bash
-pdm add camunda-client
-```
-
-## ExternalTask functional usage
-
-Source code in `examples/external_task`
-
-```py
 from camunda_client.worker import ExternalTaskWorker
 
 from .enums import WorkerEnum
@@ -48,6 +23,4 @@ async def subscribe(
                     await task_context.fail(error_message=result.message)
                 else:
                     print(f"Task with id {task_dto.id} was completed")
-                    await task_context.complete()
-
-```
+                    await task_context.complete(global_variables=result.variables)

@@ -1,0 +1,15 @@
+[project]
+name = "camunda-client"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Strana Dev",email = "pypi@stranadev.ru"},
+]
+dependencies = []
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
