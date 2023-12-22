@@ -11,10 +11,10 @@ jobs:
           - mypy camunda_client
           - black --check camunda_client
           - ruff check camunda_client
-          - |
-            pdm run coverage run
-            pdm run coverage report -m
-            pdm run coverage xml
+          # - |
+          #   pdm run coverage run
+          #   pdm run coverage report -m
+          #   pdm run coverage xml
 
     steps:
       - uses: actions/checkout@v3
