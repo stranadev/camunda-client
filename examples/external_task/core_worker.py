@@ -5,11 +5,10 @@ from asyncio import Protocol
 from dataclasses import dataclass
 from typing import Any
 
-from pydantic import BaseModel
-
 from camunda_client.types_ import Variables
 from camunda_client.utils import deserialize
 from camunda_client.worker.dto import ExternalTaskDTO
+from pydantic import BaseModel
 
 
 class WorkerProtocol(Protocol):

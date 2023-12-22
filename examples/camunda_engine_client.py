@@ -3,7 +3,6 @@ import datetime
 import uuid
 
 import httpx
-
 from camunda_client.clients.dto import AuthData
 from camunda_client.clients.engine.client import CamundaEngineClient
 from camunda_client.utils import deserialize

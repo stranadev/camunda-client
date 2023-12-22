@@ -8,9 +8,9 @@ jobs:
         python-version:
           - 3.11.4
         job:
-          - mypy .
-          - black --check .
-          - ruff check .
+          - mypy camunda_client
+          - black --check camunda_client
+          - ruff check camunda_client
           - |
             pdm run coverage run
             pdm run coverage report -m
