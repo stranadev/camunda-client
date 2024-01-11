@@ -1,5 +1,6 @@
 import json
 from collections.abc import Sequence
+from http import HTTPStatus
 from uuid import UUID
 
 import httpx
@@ -120,6 +121,21 @@ class CamundaEngineClient:
         raise_for_status(response)
         adapter = TypeAdapter(list[TaskSchema])
         return adapter.validate_python(response.json())
+
+    async def get_task(
+        self,
+        ident: UUID,
+    ) -> TaskSchema | None:
+        """Retrieves a task by id"""
+
+        url = self._urls.get_task_by_id(str(ident))
+        response = await self._http_client.get(url)
+
+        if response.status_code == HTTPStatus.NOT_FOUND:
+            return None
+
+        raise_for_status(response)
+        return TaskSchema.model_validate(response.json())
 
     async def get_history_tasks(
         self,
