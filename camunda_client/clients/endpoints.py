@@ -51,6 +51,10 @@ class CamundaUrls:
         return f"/process-instance/{process_instance_id}"
 
     @classmethod
+    def get_task_by_id(cls, ident: str) -> str:
+        return f"{cls.task}/{ident}"
+
+    @classmethod
     def submit_task_form(cls, task_id: str) -> str:
         return f"{cls.task}/{task_id}/submit-form"
 
