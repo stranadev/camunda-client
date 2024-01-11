@@ -3,11 +3,12 @@ import contextlib
 from datetime import timedelta
 
 import httpx
+from external_task.processor import subscribe
+
 from camunda_client.clients.dto import AuthData
 from camunda_client.clients.external_task.client import ExternalTaskClient
 from camunda_client.clients.external_task.dto import ExternalTaskConfig
 from camunda_client.worker.task_worker import ExternalTaskWorker
-from external_task.processor import subscribe
 
 
 @contextlib.asynccontextmanager

@@ -18,7 +18,7 @@ class LinkSchema(BaseSchema):
 
 
 class ProcessInstanceSchema(BaseSchema):
-    id: str
+    id: UUID
     definition_id: str | None = None
     links: MayBeNullableList[LinkSchema]
     business_key: str | None = None
@@ -100,7 +100,7 @@ class VariableInstanceSchema(VariableValueSchema):
     id: str
     name: str
     process_definition_id: str
-    process_instance_id: str
+    process_instance_id: UUID
     execution_id: str
     case_instance_id: str | None = None
     case_execution_id: str | None = None
