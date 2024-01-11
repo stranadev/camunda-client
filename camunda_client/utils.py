@@ -3,6 +3,7 @@ from decimal import Decimal
 from typing import Any
 
 import httpx
+import orjson
 
 from camunda_client.exceptions import CamundaClientError
 from camunda_client.types_ import VariableTypes, VariableValueSchema
@@ -22,30 +23,37 @@ def camunda_timedelta(delta: timedelta) -> int:
     return int(delta.total_seconds() * 1000)
 
 
-def deserialize(  # noqa: C901
+def deserialize(
     value: Any,  # noqa: ANN401
     type_: VariableTypes | None = None,
 ) -> VariableValueSchema:
     if type_ is not None:
         return VariableValueSchema(value=value, type=type_)
 
-    if isinstance(value, bool):
-        type_ = "Boolean"
-    elif isinstance(value, datetime):
-        type_ = "Date"
-        value = to_camunda_datetime(value)
-    elif isinstance(value, Decimal | float):
-        type_ = "Double"
-    elif isinstance(value, int):
-        type_ = "Integer"
-    elif isinstance(value, dict):
-        type_ = "Object"
-    elif isinstance(value, str):
-        type_ = "String"
-
-    if type_ is None:
-        msg = f"Got undefined type: {type(value)}"
-        raise ValueError(msg)
+    match value:
+        case bool():
+            type_ = "Boolean"
+        case datetime():
+            type_ = "Date"
+            value = to_camunda_datetime(value)
+        case Decimal():
+            type_ = "Double"
+        case float():
+            type_ = "Double"
+        case int():
+            type_ = "Integer"
+        case None:
+            type_ = "Null"
+        case dict() | list():
+            type_ = "Json"
+            value = orjson.dumps(value)
+        case bytes():
+            type_ = "Bytes"
+        case str():
+            type_ = "String"
+        case _ as never:
+            msg = f"Got undefined type: {type(never)}"
+            raise ValueError(msg)
 
     return VariableValueSchema(value=value, type=type_)
 
