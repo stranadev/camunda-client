@@ -24,6 +24,7 @@ class GetTasksFilterSchema(BaseSchema):
     candidate_group: str | None = None
     candidate_user: str | None = None
     sorting: SortSchema | None = None
+    process_instance_id: UUID | None = None
 
 
 class GetHistoryTasksFilterSchema(BaseSchema):
