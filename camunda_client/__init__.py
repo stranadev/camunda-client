@@ -4,12 +4,23 @@ from .clients import (
     ExternalTaskClient,
     ExternalTaskConfig,
 )
+from .worker import (
+    ExternalTaskContext,
+    ExternalTaskDTO,
+    ExternalTaskWorker,
+    TopicConsumer,
+)
 
 __all__ = [
     "CamundaEngineClient",
     "CamundaUrls",
     "ExternalTaskClient",
     "ExternalTaskConfig",
+    "ExternalTaskDTO",
+    "TopicConsumer",
+    "ExternalTaskContext",
+    "ExternalTaskWorker",
+    "ExternalTaskDTO",
 ]
 
 

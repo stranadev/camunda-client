@@ -164,7 +164,7 @@ class CamundaEngineClient:
         response = await self._http_client.get(
             self._urls.variable_instances,
             params={
-                "process_instance_id": str(process_instance_id),
+                "processInstanceId": str(process_instance_id),
                 "deserializeValues": deserialize_values,
             },
         )
