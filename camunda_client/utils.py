@@ -60,3 +60,10 @@ def deserialize(
 
 def to_camunda_datetime(value: datetime) -> str:
     return value.isoformat(timespec="milliseconds").replace("+00:00", "+0000")
+
+
+def process_variable(variable: VariableValueSchema) -> Any:  # noqa: ANN401
+    if variable.type == "Json":
+        return orjson.loads(variable.value)
+
+    return variable.value

@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Any
 
 from camunda_client.types_ import BaseSchema, Variables
+from camunda_client.utils import process_variable
 
 
 class ExternalTaskSchema(BaseSchema):
@@ -26,4 +27,7 @@ class ExternalTaskSchema(BaseSchema):
 
     @property
     def parsed_variables(self) -> dict[str, Any]:
-        return {key: schema.value for key, schema in self.variables.items()}
+        return {
+            key: process_variable(schema.value)
+            for key, schema in self.variables.items()
+        }

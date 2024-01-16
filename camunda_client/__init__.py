@@ -4,6 +4,8 @@ from .clients import (
     ExternalTaskClient,
     ExternalTaskConfig,
 )
+from .types_ import Variables, VariableValueSchema
+from .utils import process_variable
 from .worker import (
     ExternalTaskContext,
     ExternalTaskDTO,
@@ -21,6 +23,9 @@ __all__ = [
     "ExternalTaskContext",
     "ExternalTaskWorker",
     "ExternalTaskDTO",
+    "process_variable",
+    "VariableValueSchema",
+    "Variables",
 ]
 
 

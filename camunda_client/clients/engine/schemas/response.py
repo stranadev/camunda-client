@@ -48,7 +48,7 @@ class ProcessDefinitionSchema(BaseSchema):
 class TaskSchema(BaseSchema):
     id: UUID
     name: str
-    assignee: str | None = None
+    assignee: str
     owner: str | None = None
     created: datetime
     last_updated: datetime | None
