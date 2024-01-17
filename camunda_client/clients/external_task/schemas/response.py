@@ -27,7 +27,4 @@ class ExternalTaskSchema(BaseSchema):
 
     @property
     def parsed_variables(self) -> dict[str, Any]:
-        return {
-            key: process_variable(schema)
-            for key, schema in self.variables.items()
-        }
+        return {key: process_variable(schema) for key, schema in self.variables.items()}
