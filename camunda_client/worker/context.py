@@ -1,3 +1,4 @@
+import traceback
 from types import TracebackType
 from typing import TYPE_CHECKING
 
@@ -33,8 +34,13 @@ class ExternalTaskContext:
             return
 
         if exc_val:
-            error_message = f"{exc_val.__class__.__name__}"
-            await self._client.failure(self._task.id, error_message=error_message)
+            error_message = f"{exc_val.__class__.__qualname__}"
+            error_details = "".join(traceback.format_exception(exc_val))
+            await self._client.failure(
+                self._task.id,
+                error_message=error_message,
+                error_details=error_details,
+            )
         else:
             await self._client.complete(self._task.id)
 

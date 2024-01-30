@@ -4,7 +4,14 @@ from .body import (
     StartProcessInstanceSchema,
 )
 from .query import ProcessInstanceQuerySchema
-from .response import ProcessInstanceSchema
+from .response import (
+    HistoricTaskInstanceSchema,
+    LinkSchema,
+    ProcessDefinitionSchema,
+    ProcessInstanceSchema,
+    TaskSchema,
+    VariableInstanceSchema,
+)
 
 __all__ = [
     "StartProcessInstanceSchema",
@@ -12,4 +19,9 @@ __all__ = [
     "GetHistoryTasksFilterSchema",
     "ProcessInstanceSchema",
     "GetTasksFilterSchema",
+    "LinkSchema",
+    "ProcessDefinitionSchema",
+    "TaskSchema",
+    "HistoricTaskInstanceSchema",
+    "VariableInstanceSchema",
 ]
