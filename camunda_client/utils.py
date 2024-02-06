@@ -1,12 +1,14 @@
 from datetime import datetime, timedelta
 from decimal import Decimal
-from typing import Any
+from typing import Any, TypeVar
 
 import httpx
 import orjson
 
 from camunda_client.exceptions import CamundaClientError
 from camunda_client.types_ import VariableTypes, VariableValueSchema
+
+_T = TypeVar("_T")
 
 
 def raise_for_status(response: httpx.Response) -> None:
@@ -67,3 +69,15 @@ def process_variable(variable: VariableValueSchema) -> Any:  # noqa: ANN401
         return orjson.loads(variable.value)
 
     return variable.value
+
+
+def getval(value: _T | None) -> _T:
+    """
+    Returns value if value is not None
+
+    Raised:
+        - `ValueError`
+    """
+    if value is None:
+        raise ValueError
+    return value
