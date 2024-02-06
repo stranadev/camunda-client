@@ -1,6 +1,6 @@
 [project]
 name = "camunda-client"
-version = "0.4.4"
+version = "0.4.5"
 description = ""
 authors = [
     {name = "Strana Dev",email = "pypi@stranadev.ru"},
@@ -47,7 +47,7 @@ omit = [
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.4.4"
+version = "0.4.5"
 version_files = [
     "camunda_client/__init__.py",
     "pyproject.toml:version"
@@ -84,7 +84,7 @@ init_typed = true
 [tool.isort]
 profile = "black"
 
-[tool.ruff]
+[tool.lint.ruff]
 fixable = [
   "F",
   "E",
@@ -94,7 +94,7 @@ fixable = [
   "UP",
   "RUF",
 ]
-ignore = [
+lint.ignore = [
   "E501", # Line Length
   "A003", # Class attribute ... is shadowing a python builtin
   "ANN101",
@@ -110,26 +110,26 @@ ignore = [
   "RUF002",
   "RUF003",
 ]
-select = ["ALL"]
+lint.select = ["ALL"]
 src = ["src", "tests"]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/*" = [
   "S101",
   "PT006", # Wrong name(s) type in `@pytest.mark.parametrize`, expected `tuple`
   "S311",
 ]
 
-[tool.ruff.flake8-pytest-style]
+[tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 6
 
-[tool.ruff.flake8-bugbear]
+[tool.ruff.lint.flake8-bugbear]
 extend-immutable-calls = []
 
-[tool.ruff.pep8-naming]
+[tool.ruff.lint.pep8-naming]
 classmethod-decorators = [
   "classmethod",
   "pydantic.validator",
