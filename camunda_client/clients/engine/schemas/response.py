@@ -7,6 +7,7 @@ from camunda_client.types_ import (
     Variables,
     VariableValueSchema,
 )
+from camunda_client.utils import getval
 
 from .enums import DelegationState
 
@@ -48,14 +49,14 @@ class ProcessDefinitionSchema(BaseSchema):
 class TaskSchema(BaseSchema):
     id: UUID
     name: str
-    assignee: str
+    assignee: str | None = None
     owner: str | None = None
     created: datetime
-    last_updated: datetime | None
-    delegation_state: DelegationState | None
-    description: str | None
+    last_updated: datetime | None = None
+    delegation_state: DelegationState | None = None
+    description: str | None = None
     execution_id: UUID
-    parent_task_id: str | None
+    parent_task_id: str | None = None
     priority: int
     process_definition_id: str
     process_instance_id: UUID
@@ -65,6 +66,10 @@ class TaskSchema(BaseSchema):
     task_definition_key: str | None = None
     suspended: bool
     tenant_id: str | None
+
+    @property
+    def assignee_uuid(self) -> UUID:
+        return UUID(getval(self.assignee))
 
 
 class HistoricTaskInstanceSchema(BaseSchema):
