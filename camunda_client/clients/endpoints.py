@@ -34,6 +34,7 @@ class CamundaUrls:
     message_send = "/message"
     process_instances = "/process-instance"
     task = "/task"
+    tasks_count = f"{task}/count"
     history_task = "/history/task"
     variable_instances = "/history/variable-instance"
 
