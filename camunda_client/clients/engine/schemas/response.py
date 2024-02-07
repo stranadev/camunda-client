@@ -52,6 +52,7 @@ class TaskSchema(BaseSchema):
     assignee: str | None = None
     owner: str | None = None
     created: datetime
+    due: datetime | None = None
     last_updated: datetime | None = None
     delegation_state: DelegationState | None = None
     description: str | None = None
