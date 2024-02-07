@@ -14,7 +14,7 @@ from camunda_client.clients.engine.schemas.response import (
     TaskSchema,
     VariableInstanceSchema,
 )
-from camunda_client.clients.schemas import PaginationParams
+from camunda_client.clients.schemas import CountSchema, PaginationParams
 from camunda_client.types_ import Variables
 from camunda_client.utils import raise_for_status
 
@@ -104,11 +104,11 @@ class CamundaEngineClient:
 
     async def get_tasks(
         self,
-        schema: GetTasksFilterSchema,
+        schema: GetTasksFilterSchema | None = None,
         pagination: PaginationParams | None = None,
     ) -> Sequence[TaskSchema]:
         """Queries for tasks that fulfill a given filter"""
-
+        schema = schema or GetTasksFilterSchema()
         pagination_params = (
             pagination.model_dump(mode="json", by_alias=True) if pagination else {}
         )
@@ -121,6 +121,22 @@ class CamundaEngineClient:
         raise_for_status(response)
         adapter = TypeAdapter(list[TaskSchema])
         return adapter.validate_python(response.json())
+
+    async def get_tasks_count(
+        self,
+        schema: GetTasksFilterSchema | None = None,
+    ) -> CountSchema:
+        """
+        Retrieves the number of tasks that fulfill the given filter.
+        Corresponds to the size of the result set of the Get Tasks (POST) method and takes the same parameters.
+        """
+        schema = schema or GetTasksFilterSchema()
+        response = await self._http_client.post(
+            self._urls.tasks_count,
+            content=schema.model_dump_json(by_alias=True, exclude_none=True),
+        )
+        raise_for_status(response)
+        return CountSchema.model_validate(response.json())
 
     async def get_task(
         self,
