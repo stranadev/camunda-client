@@ -30,3 +30,7 @@ class GetTasksFilterSchema(BaseSchema):
 class GetHistoryTasksFilterSchema(BaseSchema):
     process_instance_id: UUID | None = None
     sorting: SortSchema | None = None
+
+
+class SetAssigneeTaskSchema(BaseSchema):
+    user_id: str
