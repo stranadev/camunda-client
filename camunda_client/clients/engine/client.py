@@ -8,7 +8,10 @@ from pydantic.type_adapter import TypeAdapter
 
 from camunda_client.clients.dto import AuthData
 from camunda_client.clients.endpoints import CamundaUrls
-from camunda_client.clients.engine.schemas.body import ClaimTaskSchema
+from camunda_client.clients.engine.schemas.body import (
+    ClaimTaskSchema,
+    SetAssigneeTaskSchema,
+)
 from camunda_client.clients.engine.schemas.response import (
     HistoricTaskInstanceSchema,
     TaskSchema,
@@ -237,31 +240,19 @@ class CamundaEngineClient:
         response = await self._http_client.post(self._urls.unclaim_task(str(task_id)))
         raise_for_status(response)
 
+    async def set_assignee_task(
+        self,
+        task_id: UUID,
+        user_id: UUID,
+    ) -> None:
+        """
+        Changes the assignee of a task to a specific user..
+        """
+        response = await self._http_client.post(
+            self._urls.set_assignee_task(str(task_id)),
+            content=SetAssigneeTaskSchema(user_id=str(user_id)).model_dump_json(
+                by_alias=True,
+            ),
+        )
+        raise_for_status(response)
 
-# • эндпоинт старта процесса
-# • эндпоинт получения списка юзер таск
-# эндпоинт получения списка юзер таск через фильтры ?
-# • эндпоинт для получения переменных user_task get_variables
-# • эндпоинт для завершения task
-# • эндпоинт get task history
-# • POST /task/{id}/claim
-# • POST /task/anId/unclaim
-
-
-"""
-
-
-    async def get_user_tasks(self) -> dict[str, Any]:
-        raise NotImplementedError
-
-    async def get_variables(self) -> dict[str, Any]:
-        raise NotImplementedError
-
-    async def get_process_history(self) -> dict[str, Any]:
-        raise NotImplementedError
-
-    async def get_task_count(self, user_id: UUID) -> dict[str, Any]:
-        raise NotImplementedError
-
-
-"""

@@ -66,3 +66,7 @@ class CamundaUrls:
     @classmethod
     def unclaim_task(cls, task_id: str) -> str:
         return f"{cls.task}/{task_id}/unclaim"
+
+    @classmethod
+    def set_assignee_task(cls, task_id: str) -> str:
+        return f"{cls.task}/{task_id}/assignee"
