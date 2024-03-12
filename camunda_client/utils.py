@@ -71,7 +71,7 @@ def process_variable(variable: VariableValueSchema) -> Any:  # noqa: ANN401
     return variable.value
 
 
-def getval(value: _T | None) -> _T:
+def get_value(value: _T | None) -> _T:
     """
     Returns value if value is not None
 

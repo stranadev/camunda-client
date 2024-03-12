@@ -7,7 +7,7 @@ from camunda_client.types_ import (
     Variables,
     VariableValueSchema,
 )
-from camunda_client.utils import getval
+from camunda_client.utils import get_value
 
 from .enums import DelegationState
 
@@ -70,7 +70,7 @@ class TaskSchema(BaseSchema):
 
     @property
     def assignee_uuid(self) -> UUID:
-        return UUID(getval(self.assignee))
+        return UUID(get_value(self.assignee))
 
 
 class HistoricTaskInstanceSchema(BaseSchema):
