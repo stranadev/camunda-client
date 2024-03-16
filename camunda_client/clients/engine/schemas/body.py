@@ -25,6 +25,10 @@ class GetTasksFilterSchema(BaseSchema):
     candidate_user: str | None = None
     sorting: SortSchema | None = None
     process_instance_id: UUID | None = None
+    process_instance_business_key: str | None = None
+    process_instance_business_key_in: list[str] | None = None
+    process_definition_key: str | None = None
+    process_definition_key_in: str | None = None
 
 
 class GetHistoryTasksFilterSchema(BaseSchema):
