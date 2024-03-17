@@ -2,6 +2,7 @@ from .body import (
     GetHistoryTasksFilterSchema,
     GetTasksFilterSchema,
     StartProcessInstanceSchema,
+    SendCorrelationMessageSchema,
 )
 from .query import ProcessInstanceQuerySchema
 from .response import (
@@ -24,4 +25,5 @@ __all__ = [
     "TaskSchema",
     "HistoricTaskInstanceSchema",
     "VariableInstanceSchema",
+    "SendCorrelationMessageSchema",
 ]
