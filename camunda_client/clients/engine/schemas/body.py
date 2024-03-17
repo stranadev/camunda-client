@@ -38,3 +38,21 @@ class GetHistoryTasksFilterSchema(BaseSchema):
 
 class SetAssigneeTaskSchema(BaseSchema):
     user_id: str
+
+
+class SendCorrelationMessageSchema(BaseSchema):
+    message_name: str
+    business_key: str | None = None
+    process_instance_id: UUID | None = None
+
+    tenant_id: str | None = None
+    without_tenant_id: bool = False
+
+    correlation_keys: Variables | None = None
+    local_correlation_keys: Variables | None = None
+    process_variables: Variables | None = None
+    process_variables_local: Variables | None = None
+
+    all: bool = False
+    result_enabled: bool = False
+    variables_in_result_enabled: bool = False

@@ -1,6 +1,7 @@
 import json
 from collections.abc import Sequence
 from http import HTTPStatus
+from typing import Any
 from uuid import UUID
 
 import httpx
@@ -27,6 +28,7 @@ from .schemas import (
     ProcessInstanceQuerySchema,
     ProcessInstanceSchema,
     StartProcessInstanceSchema,
+    SendCorrelationMessageSchema,
 )
 
 
@@ -246,7 +248,7 @@ class CamundaEngineClient:
         user_id: UUID,
     ) -> None:
         """
-        Changes the assignee of a task to a specific user..
+        Changes the assignee of a task to a specific user.
         """
         response = await self._http_client.post(
             self._urls.set_assignee_task(str(task_id)),
@@ -255,3 +257,23 @@ class CamundaEngineClient:
             ),
         )
         raise_for_status(response)
+
+    async def send_correlation_message(
+        self,
+        schema: SendCorrelationMessageSchema,
+    ) -> dict[str, Any] | None:
+        """
+        Correlates a message to the process engine to either trigger
+        a message start event or an intermediate message catching event.
+        """
+        response = await self._http_client.post(
+            self._urls.message_send,
+            content=schema.model_dump_json(by_alias=True, exclude_none=True),
+        )
+        raise_for_status(response)
+
+        if response.status_code == HTTPStatus.NO_CONTENT:
+            return None
+
+        # if schema.result_enabled is true
+        return response.json()
