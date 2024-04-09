@@ -1,8 +1,13 @@
+from datetime import datetime
 from uuid import UUID
 
+from camunda_client.clients.engine.schemas.query import (
+    SortingHistoricProcessInstanceSchema,
+    VariableParameterSchema,
+)
 from camunda_client.types_ import BaseSchema, Variables
 
-from .enums import SortOrder, TaskQuerySortEnum
+from .enums import IncidentStatus, SortOrder, TaskQuerySortEnum
 
 
 class StartProcessInstanceSchema(BaseSchema):
@@ -56,3 +61,53 @@ class SendCorrelationMessageSchema(BaseSchema):
     all: bool = False
     result_enabled: bool = False
     variables_in_result_enabled: bool = False
+
+
+class HistoricProcessInstanceFilterSchema(BaseSchema):
+    process_instance_id: str | None = None
+    process_instance_ids: list[str] | None = None
+    process_definition_id: str | None = None
+    process_definition_key: str | None = None
+    process_definition_key_in: list[str] | None = None
+    process_definition_name: str | None = None
+    process_definition_name_like: str | None = None
+    process_definition_key_not_in: list[str] | None = None
+    process_instance_business_key: str | None = None
+    process_instance_business_key_in: list[str] | None = None
+    process_instance_business_key_like: str | None = None
+    root_process_instances: bool | None = None
+    finished: bool | None = None
+    unfinished: bool | None = None
+    with_incidents: bool | None = None
+    with_root_incidents: bool | None = None
+    incident_type: str | None = None
+    incident_status: IncidentStatus | None = None
+    incident_message: str | None = None
+    incident_message_like: str | None = None
+    started_before: datetime | None = None
+    started_after: datetime | None = None
+    finished_before: datetime | None = None
+    finished_after: datetime | None = None
+    executed_activity_after: datetime | None = None
+    executed_activity_before: datetime | None = None
+    executed_job_after: datetime | None = None
+    executed_job_before: datetime | None = None
+    started_by: str | None = None
+    super_process_instance_id: str | None = None
+    sub_process_instance_id: str | None = None
+    super_case_instance_id: str | None = None
+    sub_case_instance_id: str | None = None
+    case_instance_id: str | None = None
+    tenant_id_in: list[str] | None = None
+    without_tenant_id: bool | None = None
+    executed_activity_id_in: list[str] | None = None
+    active_activity_id_in: list[str] | None = None
+    active: bool | None = None
+    suspended: bool | None = None
+    completed: bool | None = None
+    externally_terminated: bool | None = None
+    internally_terminated: bool | None = None
+    variables: list[VariableParameterSchema] | None = None
+    variable_names_ignore_case: bool | None = None
+    variable_values_ignore_case: bool | None = None
+    sorting: list[SortingHistoricProcessInstanceSchema] | None = None

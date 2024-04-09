@@ -4,7 +4,12 @@ from pydantic import ConfigDict
 
 from camunda_client.types_ import BaseSchema
 
-from .enums import Operator, ProcessInstanceQuerySortEnum, SortOrder
+from .enums import (
+    Operator,
+    ProcessInstanceQuerySortEnum,
+    SortByHistoricProcessInstance,
+    SortOrder,
+)
 
 
 class ConditionQueryParameterSchema(BaseSchema):
@@ -14,7 +19,7 @@ class ConditionQueryParameterSchema(BaseSchema):
     value: Any
 
 
-class VariableQueryParameterSchema(ConditionQueryParameterSchema):
+class VariableParameterSchema(ConditionQueryParameterSchema):
     name: str | None = None
 
 
@@ -52,8 +57,13 @@ class ProcessInstanceQuerySchema(BaseSchema):
     activity_id_in: list[str] | None = None
     root_process_instances: bool | None = None
     leaf_process_instances: bool | None = None
-    variables: list[VariableQueryParameterSchema] | None = None
+    variables: list[VariableParameterSchema] | None = None
     variable_names_ignore_case: bool | None = None
     variable_values_ignore_case: bool | None = None
     or_queries: list["ProcessInstanceQuerySchema"] | None = None
     sorting: list[ProcessInstanceQuerySortItemSchema] | None = None
+
+
+class SortingHistoricProcessInstanceSchema(BaseSchema):
+    sortBy: SortByHistoricProcessInstance | None = None
+    sortOrder: SortOrder | None = None

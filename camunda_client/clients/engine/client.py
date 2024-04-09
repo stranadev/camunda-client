@@ -11,12 +11,14 @@ from camunda_client.clients.dto import AuthData
 from camunda_client.clients.endpoints import CamundaUrls
 from camunda_client.clients.engine.schemas.body import (
     ClaimTaskSchema,
+    HistoricProcessInstanceFilterSchema,
     SetAssigneeTaskSchema,
 )
 from camunda_client.clients.engine.schemas.response import (
     HistoricTaskInstanceSchema,
     TaskSchema,
     VariableInstanceSchema,
+    HistoricProcessInstanceSchema,
 )
 from camunda_client.clients.schemas import CountSchema, PaginationParams
 from camunda_client.types_ import Variables
@@ -174,6 +176,24 @@ class CamundaEngineClient:
         )
         raise_for_status(response)
         adapter = TypeAdapter(list[HistoricTaskInstanceSchema])
+        return adapter.validate_python(response.json())
+
+    async def get_history_process_instances(
+        self,
+        schema: HistoricProcessInstanceFilterSchema,
+        pagination: PaginationParams | None = None,
+    ) -> Sequence[HistoricProcessInstanceSchema]:
+        pagination_params = (
+            pagination.model_dump(mode="json", by_alias=True) if pagination else {}
+        )
+
+        response = await self._http_client.post(
+            self._urls.history_process_instance,
+            params=pagination_params,
+            content=schema.model_dump_json(by_alias=True),
+        )
+        raise_for_status(response)
+        adapter = TypeAdapter(list[HistoricProcessInstanceSchema])
         return adapter.validate_python(response.json())
 
     async def get_variable_instances(

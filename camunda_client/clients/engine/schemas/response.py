@@ -9,7 +9,7 @@ from camunda_client.types_ import (
 )
 from camunda_client.utils import get_value
 
-from .enums import DelegationState
+from .enums import DelegationState, State
 
 
 class LinkSchema(BaseSchema):
@@ -26,6 +26,28 @@ class ProcessInstanceSchema(BaseSchema):
     case_instance_id: str | None = None
     suspended: bool | None = None
     tenant_id: str | None = None
+
+
+class HistoricProcessInstanceSchema(BaseSchema):
+    id: UUID
+    root_process_instance_id: UUID | None = None
+    super_process_instance_id: UUID | None = None
+    super_case_instance_id: str | None = None
+    case_instance_id: str | None = None
+    process_definition_name: str | None = None
+    process_definition_key: str | None = None
+    process_definition_version: int | None = None
+    process_definition_id: str | None = None
+    business_key: str | None = None
+    start_time: datetime | None = None
+    end_time: datetime | None = None
+    removal_time: datetime | None = None
+    duration_in_millis: int | None = None
+    start_user_id: str | None = None
+    start_activity_id: str | None = None
+    delete_reason: str | None = None
+    tenant_id: str | None = None
+    state: State | None = None
 
 
 class ProcessDefinitionSchema(BaseSchema):
