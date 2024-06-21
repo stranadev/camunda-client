@@ -13,6 +13,7 @@ from camunda_client.clients.engine.schemas.body import (
     ClaimTaskSchema,
     HistoricProcessInstanceFilterSchema,
     SetAssigneeTaskSchema,
+    UpdateProcessVariablesSchema,
 )
 from camunda_client.clients.engine.schemas.response import (
     HistoricTaskInstanceSchema,
@@ -34,7 +35,15 @@ from .schemas import (
 )
 
 
+PROCESS_INSTANCE_ADAPTER = TypeAdapter(list[ProcessInstanceSchema])
+TASK_ADAPTER = TypeAdapter(list[TaskSchema])
+HISTORIC_TASK_INSTANCE_ADAPTER = TypeAdapter(list[HistoricTaskInstanceSchema])
+HISTORIC_PROCESS_INSTANCE_ADAPTER = TypeAdapter(list[HistoricProcessInstanceSchema])
+VARIABLE_INSTANCE_ADAPTER = TypeAdapter(list[VariableInstanceSchema])
+
+
 class CamundaEngineClient:
+
     def __init__(
         self,
         base_url: str,
@@ -96,8 +105,7 @@ class CamundaEngineClient:
             ),
         )
         raise_for_status(response)
-        adapter = TypeAdapter(list[ProcessInstanceSchema])
-        return adapter.validate_python(response.json())
+        return PROCESS_INSTANCE_ADAPTER.validate_python(response.json())
 
     async def delete_process(self, process_instance_id: str) -> None:
         """Deletes a running process instance by id"""
@@ -126,8 +134,7 @@ class CamundaEngineClient:
             content=schema.model_dump_json(by_alias=True, exclude_none=True),
         )
         raise_for_status(response)
-        adapter = TypeAdapter(list[TaskSchema])
-        return adapter.validate_python(response.json())
+        return TASK_ADAPTER.validate_python(response.json())
 
     async def get_tasks_count(
         self,
@@ -175,8 +182,7 @@ class CamundaEngineClient:
             content=schema.model_dump_json(by_alias=True),
         )
         raise_for_status(response)
-        adapter = TypeAdapter(list[HistoricTaskInstanceSchema])
-        return adapter.validate_python(response.json())
+        return HISTORIC_TASK_INSTANCE_ADAPTER.validate_python(response.json())
 
     async def get_history_process_instances(
         self,
@@ -193,8 +199,7 @@ class CamundaEngineClient:
             content=schema.model_dump_json(by_alias=True),
         )
         raise_for_status(response)
-        adapter = TypeAdapter(list[HistoricProcessInstanceSchema])
-        return adapter.validate_python(response.json())
+        return HISTORIC_PROCESS_INSTANCE_ADAPTER.validate_python(response.json())
 
     async def get_variable_instances(
         self,
@@ -202,6 +207,8 @@ class CamundaEngineClient:
         process_instance_id: UUID,
         deserialize_values: bool = False,
     ) -> Sequence[VariableInstanceSchema]:
+        """Queries for historic variable instances that fulfill the given parameters."""
+
         response = await self._http_client.get(
             self._urls.variable_instances,
             params={
@@ -210,8 +217,24 @@ class CamundaEngineClient:
             },
         )
         raise_for_status(response)
-        adapter = TypeAdapter(list[VariableInstanceSchema])
-        return adapter.validate_python(response.json())
+        return VARIABLE_INSTANCE_ADAPTER.validate_python(response.json())
+
+    async def update_variable_instances(
+        self,
+        *,
+        process_instance_id: UUID,
+        schema: UpdateProcessVariablesSchema,
+    ) -> None:
+        """
+        Updates or deletes the variables of a process instance by id. Updates precede deletions.
+        So, if a variable is updated AND deleted, the deletion overrides the update
+        """
+
+        response = await self._http_client.post(
+            self._urls.update_process_instance_variables(str(process_instance_id)),
+            content=schema.model_dump_json(by_alias=True, exclude_none=True),
+        )
+        raise_for_status(response)
 
     async def submit_task_form(
         self,
