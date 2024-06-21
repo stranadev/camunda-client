@@ -52,6 +52,10 @@ class CamundaUrls:
     def get_process_instance(process_instance_id: str) -> str:
         return f"/process-instance/{process_instance_id}"
 
+    @staticmethod
+    def update_process_instance_variables(process_instance_id: str) -> str:
+        return f"/process-instance/{process_instance_id}/variables"
+
     @classmethod
     def get_task_by_id(cls, ident: str) -> str:
         return f"{cls.task}/{ident}"

@@ -111,3 +111,8 @@ class HistoricProcessInstanceFilterSchema(BaseSchema):
     variable_names_ignore_case: bool | None = None
     variable_values_ignore_case: bool | None = None
     sorting: list[SortingHistoricProcessInstanceSchema] | None = None
+
+
+class UpdateProcessVariablesSchema(BaseSchema):
+    modifications: Variables | None = None
+    deletions: list[str] | None = None
