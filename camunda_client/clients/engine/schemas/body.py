@@ -34,6 +34,26 @@ class GetTasksFilterSchema(BaseSchema):
     process_instance_business_key_in: list[str] | None = None
     process_definition_key: str | None = None
     process_definition_key_in: str | None = None
+    task_variables: list[VariableParameterSchema] | None = None
+    process_variables: list[VariableParameterSchema] | None = None
+
+    due_date: datetime | None = None
+    due_date_expression: str | None = None
+
+    due_after: datetime | None = None
+    due_after_expression: str | None = None
+
+    due_before: datetime | None = None
+    due_before_expression: str | None = None
+    without_due_date: bool | None = None
+
+    created_on: datetime | None = None
+    created_after: datetime | None = None
+    created_before: datetime | None = None
+
+    task_definition_key: str | None = None
+    task_definition_key_like: str | None = None
+    task_definition_key_in: list[str] | None = None
 
 
 class GetHistoryTasksFilterSchema(BaseSchema):
