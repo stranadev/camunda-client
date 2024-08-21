@@ -6,9 +6,9 @@ authors = [
     {name = "Strana Dev",email = "pypi@stranadev.ru"},
 ]
 dependencies = [
-    "pydantic>=2.5.2",
-    "httpx>=0.26.0",
-    "orjson>=3.9.10",
+    "pydantic>=2.8.2",
+    "httpx>=0.27.0",
+    "orjson>=3.10.7",
 ]
 requires-python = ">=3.11"
 readme = "README.md"
@@ -55,6 +55,8 @@ version_files = [
 
 
 [tool.mypy]
+exclude = "(examples)|(t.py)"
+
 plugins = [
   "pydantic.mypy",
 ]

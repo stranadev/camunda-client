@@ -13,8 +13,7 @@ from camunda_client.worker.dto import ExternalTaskDTO
 
 
 class WorkerProtocol(Protocol):
-    async def execute(self, dto: ExternalTaskDTO) -> Any:
-        ...
+    async def execute(self, dto: ExternalTaskDTO) -> Any: ...
 
 
 @dataclass(frozen=True, slots=True)
