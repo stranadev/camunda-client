@@ -1,7 +1,7 @@
 import json
 from collections.abc import Sequence
 from http import HTTPStatus
-from typing import Any
+from typing import Any, TypeVar
 from uuid import UUID
 
 import httpx
@@ -22,7 +22,11 @@ from camunda_client.clients.engine.schemas.response import (
     HistoricProcessInstanceSchema,
 )
 from camunda_client.clients.schemas import CountSchema, PaginationParams
-from camunda_client.types_ import Variables
+from camunda_client.types_ import (
+    TypedVariableValueSchema,
+    VariableValueSchema,
+    Variables,
+)
 from camunda_client.utils import raise_for_status
 
 from .schemas import (
@@ -33,6 +37,7 @@ from .schemas import (
     StartProcessInstanceSchema,
     SendCorrelationMessageSchema,
 )
+from .dto import GetTaskVariableDTO
 
 
 PROCESS_INSTANCE_ADAPTER = TypeAdapter(list[ProcessInstanceSchema])
@@ -41,9 +46,10 @@ HISTORIC_TASK_INSTANCE_ADAPTER = TypeAdapter(list[HistoricTaskInstanceSchema])
 HISTORIC_PROCESS_INSTANCE_ADAPTER = TypeAdapter(list[HistoricProcessInstanceSchema])
 VARIABLE_INSTANCE_ADAPTER = TypeAdapter(list[VariableInstanceSchema])
 
+_T = TypeVar("_T")
+
 
 class CamundaEngineClient:
-
     def __init__(
         self,
         base_url: str,
@@ -320,3 +326,49 @@ class CamundaEngineClient:
 
         # if schema.result_enabled is true
         return response.json()
+
+    async def _get_task_variable(
+        self,
+        dto: GetTaskVariableDTO,
+    ) -> httpx.Response:
+        url = self._urls.get_task_variable(
+            task_id=str(dto.task_id),
+            variable_name=dto.variable_name,
+        )
+        return await self._http_client.get(
+            url,
+            params={"deserializeValue": dto.deserialize_value},
+        )
+
+    async def get_task_variable(
+        self,
+        dto: GetTaskVariableDTO,
+    ) -> VariableValueSchema | None:
+        """
+        Retrieves a variable from the context of a given task.
+        The variable must be visible from the task.
+        It is visible from the task if it is a local task
+        variable or declared in a parent scope of the task
+        """
+        response = await self._get_task_variable(dto)
+        if response.status_code == HTTPStatus.NOT_FOUND:
+            return None
+
+        raise_for_status(response)
+        return VariableValueSchema.model_validate(response.json())
+
+    async def get_typed_task_variable(
+        self,
+        dto: GetTaskVariableDTO,
+        variable_type: type[_T],
+    ) -> TypedVariableValueSchema[_T] | None:
+        """
+        Does the same thing as `get_task_variable`,
+        except it casts value to the type specified in `variable_type`.
+        """
+        response = await self._get_task_variable(dto)
+        if response.status_code == HTTPStatus.NOT_FOUND:
+            return None
+
+        raise_for_status(response)
+        return TypedVariableValueSchema[variable_type].model_validate(response.json())

@@ -14,6 +14,7 @@ from .response import (
     VariableInstanceSchema,
 )
 
+
 __all__ = [
     "StartProcessInstanceSchema",
     "ProcessInstanceQuerySchema",

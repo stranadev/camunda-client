@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Literal, TypeAlias, TypeVar
+from typing import Annotated, Any, Generic, Literal, TypeAlias, TypeVar
 
 from pydantic import BaseModel, BeforeValidator, ConfigDict
 
@@ -51,6 +51,15 @@ VariableTypes: TypeAlias = Literal[
 
 class VariableValueSchema(BaseSchema):
     value: Any
+    type: VariableTypes | None = None
+    value_info: OptionalDict = None
+
+
+_TValue = TypeVar("_TValue")
+
+
+class TypedVariableValueSchema(BaseSchema, Generic[_TValue]):
+    value: _TValue
     type: VariableTypes | None = None
     value_info: OptionalDict = None
 
