@@ -37,7 +37,7 @@ from .schemas import (
     StartProcessInstanceSchema,
     SendCorrelationMessageSchema,
 )
-from .dto import GetTaskVariableDTO
+from .dto import GetTaskVariableDTO, UpdateTaskVariableDTO
 
 
 PROCESS_INSTANCE_ADAPTER = TypeAdapter(list[ProcessInstanceSchema])
@@ -331,7 +331,7 @@ class CamundaEngineClient:
         self,
         dto: GetTaskVariableDTO,
     ) -> httpx.Response:
-        url = self._urls.get_task_variable(
+        url = self._urls.task_variable(
             task_id=str(dto.task_id),
             variable_name=dto.variable_name,
         )
@@ -372,3 +372,20 @@ class CamundaEngineClient:
 
         raise_for_status(response)
         return TypedVariableValueSchema[variable_type].model_validate(response.json())
+
+    async def update_task_variable(
+        self,
+        dto: UpdateTaskVariableDTO,
+    ) -> None:
+        """
+        Updates a process variable that is visible from the Task scope.
+        A variable is visible from the task if it is a local task variable,
+        or declared in a parent scope of the task.
+        """
+        url = self._urls.task_variable(
+            task_id=str(dto.task_id),
+            variable_name=dto.variable_name,
+        )
+        content = dto.variable.model_dump_json(by_alias=True)
+        response = await self._http_client.put(url, content=content)
+        raise_for_status(response)
