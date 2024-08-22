@@ -1,7 +1,7 @@
 import json
 from collections.abc import Sequence
 from http import HTTPStatus
-from typing import Any, TypeVar
+from typing import Any
 from uuid import UUID
 
 import httpx
@@ -23,6 +23,7 @@ from camunda_client.clients.engine.schemas.response import (
 )
 from camunda_client.clients.schemas import CountSchema, PaginationParams
 from camunda_client.types_ import (
+    TValue,
     TypedVariableValueSchema,
     VariableValueSchema,
     Variables,
@@ -45,8 +46,6 @@ TASK_ADAPTER = TypeAdapter(list[TaskSchema])
 HISTORIC_TASK_INSTANCE_ADAPTER = TypeAdapter(list[HistoricTaskInstanceSchema])
 HISTORIC_PROCESS_INSTANCE_ADAPTER = TypeAdapter(list[HistoricProcessInstanceSchema])
 VARIABLE_INSTANCE_ADAPTER = TypeAdapter(list[VariableInstanceSchema])
-
-_T = TypeVar("_T")
 
 
 class CamundaEngineClient:
@@ -360,8 +359,8 @@ class CamundaEngineClient:
     async def get_typed_task_variable(
         self,
         dto: GetTaskVariableDTO,
-        variable_type: type[_T],
-    ) -> TypedVariableValueSchema[_T] | None:
+        variable_type: type[TValue],
+    ) -> TypedVariableValueSchema[TValue] | None:
         """
         Does the same thing as `get_task_variable`,
         except it casts value to the type specified in `variable_type`.

@@ -1,6 +1,15 @@
+from contextlib import suppress
+from datetime import datetime
 from typing import Annotated, Any, Generic, Literal, TypeAlias, TypeVar
+from uuid import UUID
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict
+import orjson
+from pydantic import (
+    AfterValidator,
+    BaseModel,
+    BeforeValidator,
+    ConfigDict,
+)
 
 
 def _snake_to_camel(name: str) -> str:
@@ -55,11 +64,18 @@ class VariableValueSchema(BaseSchema):
     value_info: OptionalDict = None
 
 
-_TValue = TypeVar("_TValue")
+TValue = TypeVar("TValue", bound=BaseModel | int | bool | datetime | UUID)
 
 
-class TypedVariableValueSchema(BaseSchema, Generic[_TValue]):
-    value: _TValue
+def _process_json_value(value: Any) -> Any:
+    with suppress(orjson.JSONDecodeError):
+        return orjson.loads(value)
+
+    return value
+
+
+class TypedVariableValueSchema(BaseSchema, Generic[TValue]):
+    value: Annotated[TValue, AfterValidator(_process_json_value)]
     type: VariableTypes | None = None
     value_info: OptionalDict = None
 

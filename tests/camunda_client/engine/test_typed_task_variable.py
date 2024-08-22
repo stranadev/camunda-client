@@ -18,7 +18,6 @@ from camunda_client.types_ import TypedVariableValueSchema
             "29b34aa1-0eae-42d9-9e97-8b6c028e4841",
             UUID("29b34aa1-0eae-42d9-9e97-8b6c028e4841"),
         ),
-        (str, "888", "888"),
         (datetime, datetime.min.isoformat(), datetime.min),
     ],
 )
