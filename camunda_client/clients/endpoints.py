@@ -77,5 +77,5 @@ class CamundaUrls:
         return f"{cls.task}/{task_id}/assignee"
 
     @classmethod
-    def get_task_variable(cls, task_id: str, variable_name: str) -> str:
+    def task_variable(cls, task_id: str, variable_name: str) -> str:
         return f"{cls.task}/{task_id}/variables/{variable_name}"
