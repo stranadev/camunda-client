@@ -1,6 +1,6 @@
 [project]
 name = "camunda-client"
-version = "0.5.4"
+version = "0.5.5"
 description = ""
 authors = [
     {name = "Strana Dev",email = "pypi@stranadev.ru"},
@@ -47,7 +47,7 @@ omit = [
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.5.4"
+version = "0.5.5"
 version_files = [
     "camunda_client/__init__.py",
     "pyproject.toml:version"
