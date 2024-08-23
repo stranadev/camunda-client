@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from contextlib import suppress
 from datetime import datetime
 from typing import Annotated, Any, Generic, Literal, TypeAlias, TypeVar
@@ -5,7 +6,6 @@ from uuid import UUID
 
 import orjson
 from pydantic import (
-    AfterValidator,
     BaseModel,
     BeforeValidator,
     ConfigDict,
@@ -64,7 +64,9 @@ class VariableValueSchema(BaseSchema):
     value_info: OptionalDict = None
 
 
-TValue = TypeVar("TValue", bound=BaseModel | int | bool | datetime | UUID)
+TValue = TypeVar(
+    "TValue", bound=BaseModel | Sequence[BaseModel] | int | bool | datetime | UUID
+)
 
 
 def _process_json_value(value: Any) -> Any:
@@ -75,7 +77,7 @@ def _process_json_value(value: Any) -> Any:
 
 
 class TypedVariableValueSchema(BaseSchema, Generic[TValue]):
-    value: Annotated[TValue, AfterValidator(_process_json_value)]
+    value: Annotated[TValue, BeforeValidator(_process_json_value)]
     type: VariableTypes | None = None
     value_info: OptionalDict = None
 

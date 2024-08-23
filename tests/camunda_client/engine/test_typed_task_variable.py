@@ -27,6 +27,8 @@ def test_typed(
     expected: Any,
 ) -> None:
     response = {"type": "String", "value": value, "valueInfo": {}}
-    schema = TypedVariableValueSchema[variable_type].model_validate(response)
+    schema = TypedVariableValueSchema[
+        variable_type  # type:ignore[valid-type]
+    ].model_validate(response)
     assert isinstance(schema.value, variable_type)
     assert schema.value == expected
