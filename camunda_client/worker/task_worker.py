@@ -18,10 +18,12 @@ class ExternalTaskWorker:
         self,
         client: "ExternalTaskClient",
         pull_interval: timedelta,
+        business_key: str | None = None,
     ) -> None:
         self._consumers: dict[str, TopicConsumer] = {}
         self._pull_interval = pull_interval
         self._client = client
+        self._business_key = business_key
 
         self._tg = asyncio.TaskGroup()
         self._closing = asyncio.Event()
@@ -44,6 +46,7 @@ class ExternalTaskWorker:
             if self._consumers:
                 tasks = await self._client.fetch_and_lock(
                     topic_names=list(self._consumers),
+                    business_key=self._business_key,
                 )
 
                 for task in tasks:

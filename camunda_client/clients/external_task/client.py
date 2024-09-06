@@ -20,6 +20,8 @@ from .schemas import (
 )
 from .schemas.response import ExternalTaskSchema
 
+ADAPTER = TypeAdapter(list[ExternalTaskSchema])
+
 
 class ExternalTaskClient:
     def __init__(  # noqa: PLR0913
@@ -74,18 +76,14 @@ class ExternalTaskClient:
         try:
             response = await self._http_client.post(
                 url,
-                content=schema.model_dump_json(
-                    by_alias=True,
-                    exclude_none=True,
-                ),
+                content=schema.model_dump_json(by_alias=True, exclude_none=True),
                 timeout=60,
             )
         except httpx.ReadTimeout:
             return []
 
         raise_for_status(response)
-        adapter = TypeAdapter(list[ExternalTaskSchema])
-        return adapter.validate_python(response.json())
+        return ADAPTER.validate_python(response.json())
 
     async def complete(
         self,
@@ -100,11 +98,7 @@ class ExternalTaskClient:
             variables=global_variables,
             local_variables=local_variables,
         )
-        content = schema.model_dump_json(
-            by_alias=True,
-            exclude_none=True,
-        )
-
+        content = schema.model_dump_json(by_alias=True, exclude_none=True)
         response = await self._http_client.post(url, content=content)
         raise_for_status(response)
 
@@ -155,10 +149,7 @@ class ExternalTaskClient:
         )
         raise_for_status(response)
 
-    async def unlock(
-        self,
-        task_id: str,
-    ) -> None:
+    async def unlock(self, task_id: str) -> None:
         url = self._urls.external_task.unlock(task_id)
         response = await self._http_client.post(url)
         raise_for_status(response)
