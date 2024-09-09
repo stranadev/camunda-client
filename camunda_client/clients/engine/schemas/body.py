@@ -5,6 +5,7 @@ from camunda_client.clients.engine.schemas.query import (
     SortingHistoricProcessInstanceSchema,
     VariableParameterSchema,
 )
+from camunda_client.clients.types_ import SerializedDateTime
 from camunda_client.types_ import BaseSchema, Variables
 
 from .enums import IncidentStatus, SortOrder, TaskQuerySortEnum
@@ -37,19 +38,19 @@ class GetTasksFilterSchema(BaseSchema):
     task_variables: list[VariableParameterSchema] | None = None
     process_variables: list[VariableParameterSchema] | None = None
 
-    due_date: datetime | None = None
+    due_date: SerializedDateTime | None = None
     due_date_expression: str | None = None
 
-    due_after: datetime | None = None
+    due_after: SerializedDateTime | None = None
     due_after_expression: str | None = None
 
-    due_before: datetime | None = None
+    due_before: SerializedDateTime | None = None
     due_before_expression: str | None = None
     without_due_date: bool | None = None
 
-    created_on: datetime | None = None
-    created_after: datetime | None = None
-    created_before: datetime | None = None
+    created_on: SerializedDateTime | None = None
+    created_after: SerializedDateTime | None = None
+    created_before: SerializedDateTime | None = None
 
     task_definition_key: str | None = None
     task_definition_key_like: str | None = None
