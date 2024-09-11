@@ -330,10 +330,11 @@ class CamundaEngineClient:
         self,
         dto: GetTaskVariableDTO,
     ) -> httpx.Response:
-        url = self._urls.task_variable(
-            task_id=str(dto.task_id),
-            variable_name=dto.variable_name,
-        )
+        url_resolver = self._urls.task_variable
+        if dto.is_local_variable:
+            url_resolver = self._urls.local_task_variable
+
+        url = url_resolver(task_id=str(dto.task_id), variable_name=dto.variable_name)
         return await self._http_client.get(
             url,
             params={"deserializeValue": dto.deserialize_value},
@@ -364,6 +365,7 @@ class CamundaEngineClient:
         """
         Does the same thing as `get_task_variable`,
         except it casts value to the type specified in `variable_type`.
+        Note: If you expect to get a pydantic model as the result, set `deserialize_value` to False.
         """
         response = await self._get_task_variable(dto)
         if response.status_code == HTTPStatus.NOT_FOUND:
@@ -381,7 +383,11 @@ class CamundaEngineClient:
         A variable is visible from the task if it is a local task variable,
         or declared in a parent scope of the task.
         """
-        url = self._urls.task_variable(
+        url_resolver = self._urls.task_variable
+        if dto.is_local_variable:
+            url_resolver = self._urls.local_task_variable
+
+        url = url_resolver(
             task_id=str(dto.task_id),
             variable_name=dto.variable_name,
         )
