@@ -55,6 +55,7 @@ class GetTasksFilterSchema(BaseSchema):
     task_definition_key: str | None = None
     task_definition_key_like: str | None = None
     task_definition_key_in: list[str] | None = None
+    or_queries: list["GetTasksFilterSchema"] | None = None
 
 
 class GetHistoryTasksFilterSchema(BaseSchema):
