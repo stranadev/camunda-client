@@ -57,7 +57,11 @@ class GetTasksFilterSchema(BaseSchema):
     task_definition_key_like: str | None = None
     task_definition_key_in: list[str] | None = None
     or_queries: list["GetTasksFilterSchema"] | None = None
-
+    assigned: bool | None = None
+    unassigned: bool | None = None
+    with_candidate_users: bool | None = None
+    without_candidate_users: bool | None = None
+    active: bool | None = None
 
 class GetHistoryTasksFilterSchema(BaseSchema):
     process_instance_id: UUID | None = None
