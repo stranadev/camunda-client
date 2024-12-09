@@ -113,8 +113,8 @@ class HistoricTaskInstanceSchema(BaseSchema):
     owner: str | None = None
     assignee: str | None = None
     start_time: datetime
-    end_time: datetime
-    duration: int
+    end_time: datetime | None = None
+    duration: int | None = None
     task_definition_key: str
     priority: int | None = None
     due: datetime | None = None
