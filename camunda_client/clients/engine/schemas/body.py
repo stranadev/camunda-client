@@ -63,6 +63,7 @@ class GetTasksFilterSchema(BaseSchema):
     without_candidate_users: bool | None = None
     active: bool | None = None
 
+
 class GetHistoryTasksFilterSchema(BaseSchema):
     process_instance_id: UUID | None = None
     sorting: SortSchema | None = None
@@ -143,3 +144,16 @@ class HistoricProcessInstanceFilterSchema(BaseSchema):
 class UpdateProcessVariablesSchema(BaseSchema):
     modifications: Variables | None = None
     deletions: list[str] | None = None
+
+
+class HistoryVariableInstanceFilterSchema(BaseSchema):
+    variable_name: str | None = None
+    variable_name_like: str | None = None
+    variable_name_in: list[str] | None = None
+    variable_value: str | None = None
+    process_instance_id: UUID | None = None
+    process_instance_id_in: list[UUID] | None = None
+    task_id_in: list[UUID] | None = None
+    deserialize_values: bool | None = None
+    include_deleted: bool | None = None
+    tenant_id_in: list[str] | None = None

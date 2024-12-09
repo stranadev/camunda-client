@@ -1,6 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
+
 from camunda_client.types_ import (
     BaseSchema,
     MayBeNullableList,
@@ -122,6 +123,10 @@ class HistoricTaskInstanceSchema(BaseSchema):
     tenant_id: str | None = None
     removal_time: datetime | None = None
     root_process_instance_id: UUID | None = None
+
+    @property
+    def assignee_uuid(self) -> UUID:
+        return UUID(get_value(self.assignee))
 
 
 class VariableInstanceSchema(VariableValueSchema):

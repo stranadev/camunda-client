@@ -2,6 +2,7 @@ import json
 from collections.abc import Sequence
 from http import HTTPStatus
 from typing import Any
+from typing_extensions import deprecated
 from uuid import UUID
 
 import httpx
@@ -12,8 +13,12 @@ from camunda_client.clients.endpoints import CamundaUrls
 from camunda_client.clients.engine.schemas.body import (
     ClaimTaskSchema,
     HistoricProcessInstanceFilterSchema,
+    HistoryVariableInstanceFilterSchema,
     SetAssigneeTaskSchema,
     UpdateProcessVariablesSchema,
+)
+from camunda_client.clients.engine.schemas.query import (
+    HistoryVariableInstanceFilterParamsSchema,
 )
 from camunda_client.clients.engine.schemas.response import (
     HistoricTaskInstanceSchema,
@@ -206,6 +211,9 @@ class CamundaEngineClient:
         raise_for_status(response)
         return HISTORIC_PROCESS_INSTANCE_ADAPTER.validate_python(response.json())
 
+    @deprecated(
+        "Use `get_history_variable_instances` or `get_history_variable_instances_post` instead of this method. Will be removed later.",
+    )
     async def get_variable_instances(
         self,
         *,
@@ -215,11 +223,55 @@ class CamundaEngineClient:
         """Queries for historic variable instances that fulfill the given parameters."""
 
         response = await self._http_client.get(
-            self._urls.variable_instances,
+            self._urls.history_variable_instances,
             params={
                 "processInstanceId": str(process_instance_id),
                 "deserializeValues": deserialize_values,
             },
+        )
+        raise_for_status(response)
+        return VARIABLE_INSTANCE_ADAPTER.validate_python(response.json())
+
+    async def get_history_variable_instances(
+        self,
+        filter_: HistoryVariableInstanceFilterParamsSchema | None = None,
+        pagination: PaginationParams | None = None,
+    ) -> Sequence[VariableInstanceSchema]:
+        """Queries for historic variable instances that fulfill the given parameters."""
+
+        filter_ = filter_ or HistoryVariableInstanceFilterParamsSchema(
+            deserialize_values=False
+        )
+        pagination_params = (
+            pagination.model_dump(mode="json", by_alias=True) if pagination else {}
+        )
+        response = await self._http_client.get(
+            self._urls.history_variable_instances,
+            params={
+                **pagination_params,
+                **filter_.model_dump(mode="json", by_alias=True, exclude_unset=True),
+            },
+        )
+        raise_for_status(response)
+        return VARIABLE_INSTANCE_ADAPTER.validate_python(response.json())
+
+    async def get_history_variable_instances_post(
+        self,
+        filter_: HistoryVariableInstanceFilterSchema | None = None,
+        pagination: PaginationParams | None = None,
+    ) -> Sequence[VariableInstanceSchema]:
+        """Queries for historic variable instances that fulfill the given parameters."""
+
+        filter_ = filter_ or HistoryVariableInstanceFilterSchema(
+            deserialize_values=False
+        )
+        pagination_params = (
+            pagination.model_dump(mode="json", by_alias=True) if pagination else {}
+        )
+        response = await self._http_client.post(
+            self._urls.history_variable_instances,
+            params=pagination_params,
+            content=filter_.model_dump_json(by_alias=True, exclude_unset=True),
         )
         raise_for_status(response)
         return VARIABLE_INSTANCE_ADAPTER.validate_python(response.json())

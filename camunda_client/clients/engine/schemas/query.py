@@ -1,7 +1,9 @@
 from typing import Any
+from uuid import UUID
 
 from pydantic import ConfigDict
 
+from camunda_client.clients.types_ import CommaSeparatedStrList
 from camunda_client.types_ import BaseSchema
 
 from .enums import (
@@ -67,3 +69,16 @@ class ProcessInstanceQuerySchema(BaseSchema):
 class SortingHistoricProcessInstanceSchema(BaseSchema):
     sortBy: SortByHistoricProcessInstance | None = None
     sortOrder: SortOrder | None = None
+
+
+class HistoryVariableInstanceFilterParamsSchema(BaseSchema):
+    variable_name: str | None = None
+    variable_name_like: str | None = None
+    variable_name_in: CommaSeparatedStrList[str] | None = None
+    variable_value: str | None = None
+    process_instance_id: UUID | None = None
+    process_instance_id_in: CommaSeparatedStrList[UUID] | None = None
+    task_id_in: CommaSeparatedStrList[UUID] | None = None
+    deserialize_values: bool | None = None
+    include_deleted: bool | None = None
+    tenant_id_in: CommaSeparatedStrList[str] | None = None

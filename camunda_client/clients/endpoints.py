@@ -37,7 +37,7 @@ class CamundaUrls:
     tasks_count = f"{task}/count"
     history_task = "/history/task"
     history_process_instance = "/history/process-instance"
-    variable_instances = "/history/variable-instance"
+    history_variable_instances = "/history/variable-instance"
 
     @staticmethod
     def get_start_process_instance(
