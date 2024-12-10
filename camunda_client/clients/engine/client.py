@@ -22,6 +22,7 @@ from camunda_client.clients.engine.schemas.query import (
 )
 from camunda_client.clients.engine.schemas.response import (
     HistoricTaskInstanceSchema,
+    TaskIdentitySchema,
     TaskSchema,
     VariableInstanceSchema,
     HistoricProcessInstanceSchema,
@@ -51,6 +52,7 @@ TASK_ADAPTER = TypeAdapter(list[TaskSchema])
 HISTORIC_TASK_INSTANCE_ADAPTER = TypeAdapter(list[HistoricTaskInstanceSchema])
 HISTORIC_PROCESS_INSTANCE_ADAPTER = TypeAdapter(list[HistoricProcessInstanceSchema])
 VARIABLE_INSTANCE_ADAPTER = TypeAdapter(list[VariableInstanceSchema])
+TASK_IDENTITY_ADAPTER = TypeAdapter(list[TaskIdentitySchema])
 
 
 class CamundaEngineClient:
@@ -446,3 +448,12 @@ class CamundaEngineClient:
         content = dto.variable.model_dump_json(by_alias=True)
         response = await self._http_client.put(url, content=content)
         raise_for_status(response)
+
+    async def get_identity_links(
+        self,
+        task_id: UUID,
+    ) -> list[TaskIdentitySchema]:
+        url = self._urls.identity_links(str(task_id))
+        response = await self._http_client.get(url)
+        raise_for_status(response)
+        return TASK_IDENTITY_ADAPTER.validate_python(response.json())

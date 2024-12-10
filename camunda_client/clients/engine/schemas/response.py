@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 from uuid import UUID
 
 
@@ -142,3 +143,9 @@ class VariableInstanceSchema(VariableValueSchema):
     activity_instance_id: str | None = None
     tenant_id: str | None = None
     error_message: str | None = None
+
+
+class TaskIdentitySchema(BaseSchema):
+    user_id: UUID | None = None
+    group_id: str | None = None
+    type: Literal["candidate", "assignee", "owner"]

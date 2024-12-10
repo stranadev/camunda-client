@@ -83,3 +83,7 @@ class CamundaUrls:
     @classmethod
     def local_task_variable(cls, task_id: str, variable_name: str) -> str:
         return f"{cls.task}/{task_id}/localVariables/{variable_name}"
+
+    @classmethod
+    def identity_links(cls, task_id: str) -> str:
+        return f"{cls.task}/{task_id}/identity-links"
