@@ -1,5 +1,8 @@
 from datetime import datetime
+from typing import Annotated
 from uuid import UUID
+
+import pydantic
 
 from camunda_client.clients.engine.schemas.query import (
     SortingHistoricProcessInstanceSchema,
@@ -154,6 +157,10 @@ class HistoryVariableInstanceFilterSchema(BaseSchema):
     process_instance_id: UUID | None = None
     process_instance_id_in: list[UUID] | None = None
     task_id_in: list[UUID] | None = None
-    deserialize_values: bool | None = None
+
+    # ↓ useless field ↓
+    deserialize_values: Annotated[bool | None, pydantic.Field(deprecated=True)] = None
+    # ↑ useless field ↑
+
     include_deleted: bool | None = None
     tenant_id_in: list[str] | None = None

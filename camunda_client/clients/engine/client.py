@@ -261,18 +261,18 @@ class CamundaEngineClient:
         self,
         filter_: HistoryVariableInstanceFilterSchema | None = None,
         pagination: PaginationParams | None = None,
+        *,
+        deserialize_values: bool = False,
     ) -> Sequence[VariableInstanceSchema]:
         """Queries for historic variable instances that fulfill the given parameters."""
 
-        filter_ = filter_ or HistoryVariableInstanceFilterSchema(
-            deserialize_values=False
-        )
+        filter_ = filter_ or HistoryVariableInstanceFilterSchema()
         pagination_params = (
             pagination.model_dump(mode="json", by_alias=True) if pagination else {}
         )
         response = await self._http_client.post(
             self._urls.history_variable_instances,
-            params=pagination_params,
+            params={"deserializeValues": deserialize_values, **pagination_params},
             content=filter_.model_dump_json(by_alias=True, exclude_unset=True),
         )
         raise_for_status(response)
