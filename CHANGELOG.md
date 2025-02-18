@@ -2,4 +2,4 @@
 
 ### Feat
 
-- add update_task method
+- add `update_task` method to `CamundaEngineClient`
