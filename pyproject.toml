@@ -1,41 +1,40 @@
 [project]
-name = "camunda-client"
-version = "0.7.1"
-description = ""
 authors = [
-    {name = "Strana Dev",email = "pypi@stranadev.ru"},
+  {name = "Strana Dev", email = "pypi@stranadev.ru"},
 ]
 dependencies = [
-    "pydantic>=2.8.2",
-    "httpx>=0.27.0",
-    "orjson>=3.10.7",
+  "pydantic>=2.8.2",
+  "httpx>=0.27.0",
+  "orjson>=3.10.7",
 ]
-requires-python = ">=3.11"
-readme = "README.md"
+description = ""
 license = {text = "Apache-2.0"}
+name = "camunda-client"
+readme = "README.md"
+requires-python = ">=3.11"
+version = "0.7.1"
 
 [project.urls]
 "Repository" = "https://github.com/stranadev/camunda-client"
 
 [build-system]
-requires = ["pdm-backend"]
 build-backend = "pdm.backend"
+requires = ["pdm-backend"]
 
 [tool.pdm.dev-dependencies]
 dev = [
-    "commitizen>=3.13.0",
-    "ruff>=0.1.9",
-    "black>=23.12.0",
-    "mypy>=1.8.0",
-    "isort>=5.13.2",
-    "coverage>=7.3.4",
-    "pytest>=7.4.4",
-    "greenlet>=3.0.3",
+  "commitizen>=3.13.0",
+  "ruff>=0.1.9",
+  "black>=23.12.0",
+  "mypy>=1.8.0",
+  "isort>=5.13.2",
+  "coverage>=7.3.4",
+  "pytest>=7.4.4",
+  "greenlet>=3.0.3",
 ]
 
 [tool.coverage.run]
 branch = true
-source = ["camunda_client"]
 command_line = "-m pytest -vv"
 concurrency = ["greenlet", "thread"]
 omit = [
@@ -43,16 +42,19 @@ omit = [
   "camunda_client/exceptions.py",
   "camunda_client/types_.py",
 ]
-
+source = ["camunda_client"]
 
 [tool.commitizen]
+changelog_start_rev = "0.7.1"
+major_version_zero = true
 name = "cz_conventional_commits"
+tag_format = "$version"
+update_changelog_on_bump = true
 version = "0.7.1"
 version_files = [
-    "camunda_client/__init__.py",
-    "pyproject.toml:version"
+  "camunda_client/__init__.py",
+  "pyproject.toml:version",
 ]
-
 
 [tool.mypy]
 exclude = "(examples)|(t.py)"

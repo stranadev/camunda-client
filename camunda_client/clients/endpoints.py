@@ -1,4 +1,6 @@
 from typing import ClassVar
+from typing_extensions import deprecated
+from uuid import UUID
 
 
 class ExternalTaskUrls:
@@ -57,7 +59,12 @@ class CamundaUrls:
         return f"/process-instance/{process_instance_id}/variables"
 
     @classmethod
+    @deprecated("Use `task_by_id` instead. Will be removed in 0.9.0")
     def get_task_by_id(cls, ident: str) -> str:
+        return f"{cls.task}/{ident}"
+
+    @classmethod
+    def task_by_id(cls, ident: str | UUID) -> str:
         return f"{cls.task}/{ident}"
 
     @classmethod

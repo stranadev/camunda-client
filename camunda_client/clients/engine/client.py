@@ -148,6 +148,14 @@ class CamundaEngineClient:
         raise_for_status(response)
         return TASK_ADAPTER.validate_python(response.json())
 
+    async def update_task(self, task_id: UUID, *, schema: TaskSchema) -> None:
+        """Updates a task"""
+        response = await self._http_client.put(
+            self._urls.task_by_id(task_id),
+            content=schema.model_dump_json(by_alias=True),
+        )
+        raise_for_status(response)
+
     async def get_tasks_count(
         self,
         schema: GetTasksFilterSchema | None = None,
@@ -170,7 +178,7 @@ class CamundaEngineClient:
     ) -> TaskSchema | None:
         """Retrieves a task by id"""
 
-        url = self._urls.get_task_by_id(str(ident))
+        url = self._urls.task_by_id(str(ident))
         response = await self._http_client.get(url)
 
         if response.status_code == HTTPStatus.NOT_FOUND:

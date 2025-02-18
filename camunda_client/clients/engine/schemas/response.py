@@ -3,6 +3,7 @@ from typing import Literal
 from uuid import UUID
 
 
+from camunda_client.clients.types_ import SerializedDateTime
 from camunda_client.types_ import (
     BaseSchema,
     MayBeNullableList,
@@ -75,9 +76,9 @@ class TaskSchema(BaseSchema):
     name: str
     assignee: str | None = None
     owner: str | None = None
-    created: datetime
-    due: datetime | None = None
-    last_updated: datetime | None = None
+    created: SerializedDateTime
+    due: SerializedDateTime | None = None
+    last_updated: SerializedDateTime | None = None
     delegation_state: DelegationState | None = None
     description: str | None = None
     execution_id: UUID
