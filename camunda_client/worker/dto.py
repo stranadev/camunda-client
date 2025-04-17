@@ -1,6 +1,6 @@
-from datetime import datetime
 from typing import Any
 
+from camunda_client.clients.types_ import SerializedDateTime
 from camunda_client.types_ import BaseDTO, TVariables, Variables
 
 
@@ -12,7 +12,7 @@ class ExternalTaskDTO(BaseDTO):
     activity_instance_id: str | None = None
     error_message: str | None = None
     execution_id: str | None = None
-    lock_expiration_time: datetime | None = None
+    lock_expiration_time: SerializedDateTime | None = None
     process_definition_id: str | None = None
     process_definition_key: str | None = None
     process_instance_id: str | None = None

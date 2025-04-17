@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Annotated
 from uuid import UUID
 
@@ -115,14 +114,14 @@ class HistoricProcessInstanceFilterSchema(BaseSchema):
     incident_status: IncidentStatus | None = None
     incident_message: str | None = None
     incident_message_like: str | None = None
-    started_before: datetime | None = None
-    started_after: datetime | None = None
-    finished_before: datetime | None = None
-    finished_after: datetime | None = None
-    executed_activity_after: datetime | None = None
-    executed_activity_before: datetime | None = None
-    executed_job_after: datetime | None = None
-    executed_job_before: datetime | None = None
+    started_before: SerializedDateTime | None = None
+    started_after: SerializedDateTime | None = None
+    finished_before: SerializedDateTime | None = None
+    finished_after: SerializedDateTime | None = None
+    executed_activity_after: SerializedDateTime | None = None
+    executed_activity_before: SerializedDateTime | None = None
+    executed_job_after: SerializedDateTime | None = None
+    executed_job_before: SerializedDateTime | None = None
     started_by: str | None = None
     super_process_instance_id: str | None = None
     sub_process_instance_id: str | None = None

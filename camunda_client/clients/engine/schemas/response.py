@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
@@ -42,9 +41,9 @@ class HistoricProcessInstanceSchema(BaseSchema):
     process_definition_version: int | None = None
     process_definition_id: str | None = None
     business_key: str | None = None
-    start_time: datetime | None = None
-    end_time: datetime | None = None
-    removal_time: datetime | None = None
+    start_time: SerializedDateTime | None = None
+    end_time: SerializedDateTime | None = None
+    removal_time: SerializedDateTime | None = None
     duration_in_millis: int | None = None
     start_user_id: str | None = None
     start_activity_id: str | None = None
@@ -114,16 +113,16 @@ class HistoricTaskInstanceSchema(BaseSchema):
     delete_reason: str | None = None
     owner: str | None = None
     assignee: str | None = None
-    start_time: datetime
-    end_time: datetime | None = None
+    start_time: SerializedDateTime
+    end_time: SerializedDateTime | None = None
     duration: int | None = None
     task_definition_key: str
     priority: int | None = None
-    due: datetime | None = None
+    due: SerializedDateTime | None = None
     parent_task_id: str | None = None
-    follow_up: datetime | None = None
+    follow_up: SerializedDateTime | None = None
     tenant_id: str | None = None
-    removal_time: datetime | None = None
+    removal_time: SerializedDateTime | None = None
     root_process_instance_id: UUID | None = None
 
     @property

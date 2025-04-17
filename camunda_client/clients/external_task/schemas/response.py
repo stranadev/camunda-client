@@ -1,6 +1,6 @@
-from datetime import datetime
 from typing import Any
 
+from camunda_client.clients.types_ import SerializedDateTime
 from camunda_client.types_ import BaseSchema, Variables
 from camunda_client.utils import process_variable
 
@@ -13,7 +13,7 @@ class ExternalTaskSchema(BaseSchema):
     activity_instance_id: str | None = None
     error_message: str | None = None
     execution_id: str | None = None
-    lock_expiration_time: datetime | None = None
+    lock_expiration_time: SerializedDateTime | None = None
     process_definition_id: str | None = None
     process_definition_key: str | None = None
     process_definition_version_tag: str | None = None
