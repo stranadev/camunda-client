@@ -37,7 +37,7 @@ class GetTasksFilterSchema(BaseSchema):
     process_instance_business_key: str | None = None
     process_instance_business_key_in: list[str] | None = None
     process_definition_key: str | None = None
-    process_definition_key_in: str | None = None
+    process_definition_key_in: list[str] | None = None
     task_variables: list[VariableParameterSchema] | None = None
     process_variables: list[VariableParameterSchema] | None = None
 
