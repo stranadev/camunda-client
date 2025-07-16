@@ -76,7 +76,7 @@ class ExternalTaskClient:
         try:
             response = await self._http_client.post(
                 url,
-                content=schema.model_dump_json(by_alias=True, exclude_none=True),
+                content=schema.model_dump_json(by_alias=True, exclude_unset=True),
                 timeout=60,
             )
         except httpx.ReadTimeout:
@@ -98,7 +98,7 @@ class ExternalTaskClient:
             variables=global_variables,
             local_variables=local_variables,
         )
-        content = schema.model_dump_json(by_alias=True, exclude_none=True)
+        content = schema.model_dump_json(by_alias=True, exclude_unset=True)
         response = await self._http_client.post(url, content=content)
         raise_for_status(response)
 
@@ -123,7 +123,7 @@ class ExternalTaskClient:
             url,
             content=schema.model_dump_json(
                 by_alias=True,
-                exclude_none=True,
+                exclude_unset=True,
             ),
         )
         raise_for_status(response)
@@ -144,7 +144,7 @@ class ExternalTaskClient:
             url,
             content=schema.model_dump_json(
                 by_alias=True,
-                exclude_none=True,
+                exclude_unset=True,
             ),
         )
         raise_for_status(response)
@@ -169,7 +169,7 @@ class ExternalTaskClient:
             url,
             content=schema.model_dump_json(
                 by_alias=True,
-                exclude_none=True,
+                exclude_unset=True,
             ),
         )
         raise_for_status(response)

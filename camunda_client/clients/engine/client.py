@@ -113,7 +113,7 @@ class CamundaEngineClient:
             params=params.model_dump(
                 mode="json",
                 by_alias=True,
-                exclude_none=True,
+                exclude_unset=True,
             ),
         )
         raise_for_status(response)
@@ -143,7 +143,7 @@ class CamundaEngineClient:
         response = await self._http_client.post(
             self._urls.task,
             params=pagination_params,
-            content=schema.model_dump_json(by_alias=True, exclude_none=True),
+            content=schema.model_dump_json(by_alias=True, exclude_unset=True),
         )
         raise_for_status(response)
         return TASK_ADAPTER.validate_python(response.json())
@@ -167,7 +167,7 @@ class CamundaEngineClient:
         schema = schema or GetTasksFilterSchema()
         response = await self._http_client.post(
             self._urls.tasks_count,
-            content=schema.model_dump_json(by_alias=True, exclude_none=True),
+            content=schema.model_dump_json(by_alias=True, exclude_unset=True),
         )
         raise_for_status(response)
         return CountSchema.model_validate(response.json())
@@ -299,7 +299,7 @@ class CamundaEngineClient:
 
         response = await self._http_client.post(
             self._urls.update_process_instance_variables(str(process_instance_id)),
-            content=schema.model_dump_json(by_alias=True, exclude_none=True),
+            content=schema.model_dump_json(by_alias=True, exclude_unset=True),
         )
         raise_for_status(response)
 
@@ -378,7 +378,7 @@ class CamundaEngineClient:
         """
         response = await self._http_client.post(
             self._urls.message_send,
-            content=schema.model_dump_json(by_alias=True, exclude_none=True),
+            content=schema.model_dump_json(by_alias=True, exclude_unset=True),
         )
         raise_for_status(response)
 
