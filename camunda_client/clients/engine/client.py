@@ -221,6 +221,21 @@ class CamundaEngineClient:
         raise_for_status(response)
         return HISTORIC_PROCESS_INSTANCE_ADAPTER.validate_python(response.json())
 
+    async def get_history_process_instance(
+        self,
+        process_instance_id: UUID,
+    ) -> HistoricProcessInstanceSchema | None:
+        """Retrieves a historic process instance by id, according to the HistoricProcessInstance interface in the engine."""
+
+        response = await self._http_client.get(
+            self._urls.get_history_process_instance(process_instance_id),
+        )
+        if response.status_code == HTTPStatus.NOT_FOUND:
+            return None
+
+        raise_for_status(response)
+        return HistoricProcessInstanceSchema.model_validate(response.json())
+
     @deprecated(
         "Use `get_history_variable_instances` or `get_history_variable_instances_post` instead of this method. Will be removed later.",
     )

@@ -94,3 +94,7 @@ class CamundaUrls:
     @classmethod
     def identity_links(cls, task_id: str) -> str:
         return f"{cls.task}/{task_id}/identity-links"
+
+    @classmethod
+    def get_history_process_instance(cls, ident: UUID) -> str:
+        return f"{cls.history_process_instance}/{ident}"
