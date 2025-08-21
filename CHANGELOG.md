@@ -1,3 +1,9 @@
+## 0.10.0 (2025-08-21)
+
+### Feat
+
+- add get_history_process_instance method
+
 ## 0.9.0 (2025-07-16)
 
 ## 0.8.3 (2025-04-22)
