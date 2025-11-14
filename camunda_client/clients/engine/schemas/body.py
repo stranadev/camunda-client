@@ -394,7 +394,7 @@ class HistoryVariableInstanceFilterSchema(BaseSchema):
 
     # ↓ useless field ↓
     deserialize_values: Annotated[
-        bool | None, pydantic.pydantic.Field(deprecated=True)
+        bool | None, pydantic.Field(deprecated=True)
     ] = None
     # ↑ useless field ↑
 
