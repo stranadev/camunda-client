@@ -1,3 +1,9 @@
+## 0.10.1 (2025-11-14)
+
+### Fix
+
+- **GetHistoryTasksFilterSchema**: extend schema
+
 ## 0.10.0 (2025-08-21)
 
 ### Feat
