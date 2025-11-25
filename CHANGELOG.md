@@ -1,3 +1,9 @@
+## 0.10.3 (2025-11-25)
+
+### Feat
+
+- **CamundaEngineClient**: add timeout
+
 ## 0.10.2 (2025-11-14)
 
 ### Fix
