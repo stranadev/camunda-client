@@ -62,7 +62,9 @@ class CamundaEngineClient:
         auth_data: AuthData,
         transport: httpx.AsyncHTTPTransport,
         urls: CamundaUrls | None = None,
+        timeout: httpx.Timeout | None = None,
     ) -> None:
+        timeout = timeout or httpx.Timeout(5.0)
         self._http_client = httpx.AsyncClient(
             base_url=base_url,
             transport=transport,
@@ -71,6 +73,7 @@ class CamundaEngineClient:
                 password=auth_data.password,
             ),
             headers={"Content-Type": "application/json"},
+            timeout=timeout,
         )
         self._urls = urls or CamundaUrls()
 

@@ -393,9 +393,7 @@ class HistoryVariableInstanceFilterSchema(BaseSchema):
     task_id_in: list[UUID] | None = None
 
     # ↓ useless field ↓
-    deserialize_values: Annotated[
-        bool | None, pydantic.Field(deprecated=True)
-    ] = None
+    deserialize_values: Annotated[bool | None, pydantic.Field(deprecated=True)] = None
     # ↑ useless field ↑
 
     include_deleted: bool | None = None
