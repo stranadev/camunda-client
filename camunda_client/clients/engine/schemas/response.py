@@ -1,5 +1,7 @@
-from typing import Literal
+from typing import Annotated, Literal
 from uuid import UUID
+
+from pydantic import BeforeValidator
 
 
 from camunda_client.clients.types_ import SerializedDateTime
@@ -146,6 +148,6 @@ class VariableInstanceSchema(VariableValueSchema):
 
 
 class TaskIdentitySchema(BaseSchema):
-    user_id: UUID | None = None
+    user_id: Annotated[UUID | None, BeforeValidator(lambda v: v if v else None)] = None
     group_id: str | None = None
     type: Literal["candidate", "assignee", "owner"]
