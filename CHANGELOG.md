@@ -1,3 +1,9 @@
+## 0.10.4 (2025-11-27)
+
+### Feat
+
+- **TaskIdentitySchema**: add before validator to user_id
+
 ## 0.10.3 (2025-11-25)
 
 ### Feat
