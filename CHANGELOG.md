@@ -1,3 +1,9 @@
+## 0.10.5 (2025-12-01)
+
+### Fix
+
+- **TaskQuerySortEnum**: fix names and values
+
 ## 0.10.4 (2025-11-27)
 
 ### Feat
