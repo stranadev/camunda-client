@@ -52,9 +52,7 @@ class ExternalTaskContext:
         global_variables: Variables | None = None,
         local_variables: Variables | None = None,
     ) -> None:
-        if self._closed:
-            msg = "TaskContext is already closed"
-            raise InvalidStateError(msg)
+        self._check_closed()
 
         await self._client.complete(
             self._task.id,
@@ -69,9 +67,7 @@ class ExternalTaskContext:
         retries: int | None = None,
         error_details: str | None = None,
     ) -> None:
-        if self._closed:
-            msg = "TaskContext is already closed"
-            raise InvalidStateError(msg)
+        self._check_closed()
 
         await self._client.failure(
             self._task.id,
@@ -80,3 +76,22 @@ class ExternalTaskContext:
             error_details=error_details,
         )
         self._closed = True
+
+    async def bpmn_error(
+        self,
+        error_code: str,
+        error_message: str,
+    ) -> None:
+        self._check_closed()
+
+        await self._client.bpmn_error(
+            task_id=self._task.id,
+            error_code=error_code,
+            error_message=error_message,
+        )
+        self._closed = True
+
+    def _check_closed(self) -> None:
+        if self._closed:
+            msg = "TaskContext is already closed"
+            raise InvalidStateError(msg)
