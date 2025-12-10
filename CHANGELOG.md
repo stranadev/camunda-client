@@ -1,3 +1,9 @@
+## 0.11.2 (2025-12-10)
+
+### Feat
+
+- provide variables param, allow None to error_message
+
 ## 0.11.1 (2025-12-10)
 
 ### Fix
