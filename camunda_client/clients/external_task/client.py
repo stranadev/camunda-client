@@ -162,6 +162,7 @@ class ExternalTaskClient:
     ) -> None:
         url = self._urls.external_task.bpmn_error(task_id)
         schema = TaskBpmnErrorSchema(
+            worker_id=self._worker_id,
             error_code=error_code,
             error_message=error_message,
         )

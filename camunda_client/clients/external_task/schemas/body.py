@@ -53,6 +53,7 @@ class ExtendLockOnExternalTaskSchema(BaseSchema):
 
 
 class TaskBpmnErrorSchema(BaseSchema):
+    worker_id: str
     error_code: str
     error_message: str | None
     variables: Variables | None = None
