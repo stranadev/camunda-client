@@ -158,13 +158,15 @@ class ExternalTaskClient:
         self,
         task_id: str,
         error_code: str,
-        error_message: str,
+        error_message: str | None = None,
+        variables: Variables | None = None,
     ) -> None:
         url = self._urls.external_task.bpmn_error(task_id)
         schema = TaskBpmnErrorSchema(
             worker_id=self._worker_id,
             error_code=error_code,
             error_message=error_message,
+            variables=variables,
         )
         response = await self._http_client.post(
             url,

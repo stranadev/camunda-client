@@ -80,7 +80,8 @@ class ExternalTaskContext:
     async def bpmn_error(
         self,
         error_code: str,
-        error_message: str,
+        error_message: str | None = None,
+        variables: Variables | None = None,
     ) -> None:
         self._check_closed()
 
@@ -88,6 +89,7 @@ class ExternalTaskContext:
             task_id=self._task.id,
             error_code=error_code,
             error_message=error_message,
+            variables=variables,
         )
         self._closed = True
 
