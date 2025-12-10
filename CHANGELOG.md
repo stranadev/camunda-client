@@ -1,3 +1,9 @@
+## 0.11.0 (2025-12-10)
+
+### Feat
+
+- **ExternalTaskContext**: add bpmn_error method
+
 ## 0.10.5 (2025-12-01)
 
 ### Fix
