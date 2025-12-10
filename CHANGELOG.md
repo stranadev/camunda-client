@@ -1,3 +1,9 @@
+## 0.11.1 (2025-12-10)
+
+### Fix
+
+- **TaskBpmnErrorSchema**: add worker_id field
+
 ## 0.11.0 (2025-12-10)
 
 ### Feat
