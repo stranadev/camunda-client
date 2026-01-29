@@ -1,3 +1,9 @@
+## 0.12.0 (2026-01-29)
+
+### Feat
+
+- **ExternalTaskContext**: remove external task autocomplete
+
 ## 0.11.2 (2025-12-10)
 
 ### Feat
