@@ -41,8 +41,6 @@ class ExternalTaskContext:
                 error_message=error_message,
                 error_details=error_details,
             )
-        else:
-            await self._client.complete(self._task.id)
 
     async def unlock_task(self) -> None:
         await self._client.unlock(self._task.id)
