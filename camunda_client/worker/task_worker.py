@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 from .context import ExternalTaskContext
 from .dto import ExternalTaskDTO
 from .topic_consumer import TopicConsumer
+from camunda_client._logger import logger
 
 
 class ExternalTaskWorker:
@@ -50,6 +51,7 @@ class ExternalTaskWorker:
                 )
 
                 for task in tasks:
+                    logger.info('Got task with id "%s"', task.id)
                     consumer = self._consumers[task.topic_name]
                     consumer.task_contexts.append(
                         ExternalTaskContext(
