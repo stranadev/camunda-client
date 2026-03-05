@@ -4,6 +4,7 @@ from typing import Self
 
 from .context import ExternalTaskContext
 
+from camunda_client._logger import logger
 
 class TopicConsumer:
     def __init__(self, closing: asyncio.Event) -> None:
@@ -27,12 +28,16 @@ class TopicConsumer:
 
         if self.closing.is_set():
             await self._unlock(self.task_contexts)
+            logger.info('Got "closing" event')
             raise StopAsyncIteration
 
+        logger.info('Before "new_task_event.wait()"')
         await self.new_task_event.wait()
+        logger.info('After "new_task_event.wait()"')
 
         task_context = self.task_contexts.pop()
         if not self.task_contexts:
+            logger.info('"task_contexts" is empty, clear "new_task_event"')
             self.new_task_event.clear()
 
         return task_context
