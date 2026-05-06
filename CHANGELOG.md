@@ -1,3 +1,9 @@
+## 0.12.3 (2026-05-06)
+
+### Feat
+
+- **ExternalTaskWorker**: support retry for fetch_and_lock, remove useless
+
 ## 0.12.2 (2026-03-05)
 
 ## 0.12.1 (2026-03-05)
