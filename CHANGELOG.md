@@ -1,3 +1,9 @@
+## 0.13.0 (2026-05-06)
+
+### Feat
+
+- support _is_current_tasks_empty event
+
 ## 0.12.3 (2026-05-06)
 
 ### Feat
