@@ -6,6 +6,7 @@ dependencies = [
   "pydantic>=2.8.2",
   "httpx>=0.27.0",
   "orjson>=3.10.7",
+  "stamina>=26.1.0",
 ]
 description = "REST API Client for Camunda 7"
 license = {text = "Apache-2.0"}

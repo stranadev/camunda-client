@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:c009032c6d6538f4c7d3f613d18668f004417b4e32ba9988985ef562d1dccc1f"
+content_hash = "sha256:fa548aadd167ce371247a38ec6a1e51b26cc2148da400ff6f7534e48cf8fb495"
 
 [[metadata.targets]]
 requires_python = ">=3.11"
@@ -637,7 +637,7 @@ files = [
 name = "questionary"
 version = "2.0.1"
 requires_python = ">=3.8"
-summary = "Python library to build pretty command line user prompts â­�ï¸�"
+summary = "Python library to build pretty command line user prompts ⭐️"
 groups = ["dev"]
 dependencies = [
     "prompt-toolkit<=3.0.36,>=2.0",
@@ -682,6 +682,31 @@ groups = ["default"]
 files = [
     {file = "sniffio-1.3.0-py3-none-any.whl", hash = "sha256:eecefdce1e5bbfb7ad2eeaabf7c1eeb404d7757c379bd1f7e5cce9d8bf425384"},
     {file = "sniffio-1.3.0.tar.gz", hash = "sha256:e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101"},
+]
+
+[[package]]
+name = "stamina"
+version = "26.1.0"
+requires_python = ">=3.10"
+summary = "Production-grade retries made easy."
+groups = ["default"]
+dependencies = [
+    "tenacity",
+]
+files = [
+    {file = "stamina-26.1.0-py3-none-any.whl", hash = "sha256:62e06829bec87c06d4cafde520b32a6097d1017c378a9eb63253c5bf5ebbbb88"},
+    {file = "stamina-26.1.0.tar.gz", hash = "sha256:0214d05fdf5102c518194a4aac7520ce53cf660550ae3b940701aad88cf50c17"},
+]
+
+[[package]]
+name = "tenacity"
+version = "9.1.4"
+requires_python = ">=3.10"
+summary = "Retry code until it succeeds"
+groups = ["default"]
+files = [
+    {file = "tenacity-9.1.4-py3-none-any.whl", hash = "sha256:6095a360c919085f28c6527de529e76a06ad89b23659fa881ae0649b867a9d55"},
+    {file = "tenacity-9.1.4.tar.gz", hash = "sha256:adb31d4c263f2bd041081ab33b498309a57c77f9acf2db65aadf0898179cf93a"},
 ]
 
 [[package]]

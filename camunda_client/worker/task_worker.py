@@ -1,9 +1,13 @@
 import asyncio
 import contextlib
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Sequence
 from datetime import timedelta
 from types import TracebackType
 from typing import TYPE_CHECKING
+from camunda_client.exceptions import CamundaClientError
+from stamina import retry
+
+from camunda_client.clients.external_task.schemas.response import ExternalTaskSchema
 
 if TYPE_CHECKING:
     from camunda_client.clients import ExternalTaskClient
@@ -45,10 +49,7 @@ class ExternalTaskWorker:
     async def _pull_tasks(self) -> None:
         while True:
             if self._consumers:
-                tasks = await self._client.fetch_and_lock(
-                    topic_names=list(self._consumers),
-                    business_key=self._business_key,
-                )
+                tasks = await self._get_tasks()
 
                 for task in tasks:
                     logger.info('Got task with id "%s"', task.id)
@@ -65,6 +66,13 @@ class ExternalTaskWorker:
 
             if self._closing.is_set():
                 return
+
+    @retry(on=CamundaClientError, attempts=3)
+    async def _get_tasks(self) -> Sequence[ExternalTaskSchema]:
+        return await self._client.fetch_and_lock(
+            topic_names=list(self._consumers),
+            business_key=self._business_key,
+        )
 
     async def _wait(self) -> None:
         _, pending = await asyncio.wait(
