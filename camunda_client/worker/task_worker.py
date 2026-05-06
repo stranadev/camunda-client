@@ -32,6 +32,10 @@ class ExternalTaskWorker:
 
         self._tg = asyncio.TaskGroup()
         self._closing = asyncio.Event()
+        self._is_current_tasks_empty = asyncio.Event()
+        self._is_current_tasks_empty.set()
+
+        self._current_tasks: set[str] = set()
 
     async def __aenter__(self) -> None:
         await self._tg.__aenter__()
@@ -50,22 +54,29 @@ class ExternalTaskWorker:
         while True:
             if self._consumers:
                 tasks = await self._get_tasks()
+                self._current_tasks = {item.id for item in tasks}
 
                 for task in tasks:
                     logger.info('Got task with id "%s"', task.id)
                     consumer = self._consumers[task.topic_name]
-                    consumer.task_contexts.append(
-                        ExternalTaskContext(
-                            client=self._client,
-                            task=ExternalTaskDTO.model_validate(task),
-                        ),
+                    ctx = ExternalTaskContext(
+                        client=self._client,
+                        task=ExternalTaskDTO.model_validate(task),
+                        exit_hook=self._on_task_exit,
                     )
-                    consumer.new_task_event.set()
+                    consumer.add_task(ctx)
+                    self._is_current_tasks_empty.clear()
 
             await self._wait()
 
             if self._closing.is_set():
                 return
+
+    def _on_task_exit(self, task_id: str) -> None:
+        self._current_tasks.remove(task_id)
+
+        if not self._current_tasks:
+            self._is_current_tasks_empty.set()
 
     @retry(on=CamundaClientError, attempts=3)
     async def _get_tasks(self) -> Sequence[ExternalTaskSchema]:
@@ -75,6 +86,8 @@ class ExternalTaskWorker:
         )
 
     async def _wait(self) -> None:
+        await self._is_current_tasks_empty.wait()
+
         _, pending = await asyncio.wait(
             [
                 asyncio.create_task(

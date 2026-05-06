@@ -37,6 +37,10 @@ class TopicConsumer:
 
         return task_context
 
+    def add_task(self, ctx: ExternalTaskContext) -> None:
+        self.task_contexts.append(ctx)
+        self.new_task_event.set()
+
     async def _unlock(self, task_contexts: Sequence[ExternalTaskContext]) -> None:
         for ctx in task_contexts:
             await ctx.unlock_task()

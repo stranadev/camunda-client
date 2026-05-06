@@ -1,14 +1,16 @@
+from collections.abc import Callable
 import traceback
 from types import TracebackType
 from typing import TYPE_CHECKING
 
 from camunda_client.exceptions import InvalidStateError
 
-if TYPE_CHECKING:
-    from camunda_client.clients import ExternalTaskClient
 from camunda_client.types_ import Variables
 
 from .dto import ExternalTaskDTO
+
+if TYPE_CHECKING:
+    from camunda_client.clients import ExternalTaskClient
 
 
 class ExternalTaskContext:
@@ -16,10 +18,12 @@ class ExternalTaskContext:
         self,
         client: "ExternalTaskClient",
         task: ExternalTaskDTO,
+        exit_hook: Callable[[str], None],
     ) -> None:
         self._client = client
         self._task = task
         self._closed: bool = False
+        self._exit_hook = exit_hook
 
     async def __aenter__(self) -> ExternalTaskDTO:
         return self._task
@@ -41,6 +45,8 @@ class ExternalTaskContext:
                 error_message=error_message,
                 error_details=error_details,
             )
+
+        self._exit_hook(self._task.id)
 
     async def unlock_task(self) -> None:
         await self._client.unlock(self._task.id)
