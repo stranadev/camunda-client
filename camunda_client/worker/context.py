@@ -34,6 +34,8 @@ class ExternalTaskContext:
         exc_val: BaseException | None,
         exc_tb: TracebackType | None,
     ) -> None:
+        self._exit_hook(self._task.id)
+
         if self._closed:
             return
 
@@ -46,7 +48,6 @@ class ExternalTaskContext:
                 error_details=error_details,
             )
 
-        self._exit_hook(self._task.id)
 
     async def unlock_task(self) -> None:
         await self._client.unlock(self._task.id)
